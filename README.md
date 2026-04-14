@@ -21,7 +21,7 @@ Ensure you have Python 3.8+ installed. It is recommended to run this in a Window
 Clone the repository and install the necessary dependencies:
 
 Bash
-git clone https://github.com/Krishang-Gulati/Arachne-Ransomware-Simulator.git
+git clone https://github.com/krishanggulati8-dot/Arachne-Ransomware-Simulator
 cd Arachne-Ransomware-Simulator
 pip install -r requirements.txt
 3. Execution (The Simulation)
