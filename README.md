@@ -1,22 +1,43 @@
-# 🕸️ Arachne: A Ransomware Defense Simulator
+🕸️ Arachne: A Ransomware Defense Simulator
+📋 Overview
+Arachne is a proactive ransomware defense mechanism designed to detect and neutralize cryptographic threats in real-time. Built on the principle of Deceptive Security, it utilizes a Honey-file (Tripwire) system to monitor sensitive directories. The tool identifies unauthorized file interactions and autonomously terminates malicious processes before they can encrypt the entire file system.
 
-### Overview
-Arachne ek Python-based cybersecurity tool hai jo **Honey-file (Tripwire)** technique ka use karke ransomware attacks ko detect aur block karta hai. Ye system real-time mein sensitive directories ko monitor karta hai aur kisi bhi unauthorized modification par malicious process ko turant kill kar deta hai.
+🛡️ Core Architecture & Logic
+Arachne operates by deploying "Honey-files"—decoy documents that act as silent alarms. Under normal operations, these files remain untouched. However, ransomware, which typically scans and encrypts every file in a directory, inevitably triggers these tripwires.
 
----
+Continuous Surveillance: Utilizing the watchdog library, Arachne maintains a high-fidelity monitor on the designated trap directory (C:\HoneyTrap).
 
-### 🛡️ How it Works (Logic)
-Arachne "Honey-files" ka ek trap bichata hai. In files ko normal user touch nahi karta, lekin ransomware (jo saara data encrypt karne ki koshish karta hai) inhe modify zaroor karega.
-1. **Monitoring:** `watchdog` library ka use karke folder par nazar rakhi jati hai.
-2. **Detection:** Jaise hi koi honey-file rename ya modify hoti hai, alarm trigger ho jata hai.
-3. **Identification:** `psutil` ke zariye us PID (Process ID) ka pata lagaya jata hai jo ye change kar raha hai.
-4. **Neutralization:** Agar wo process 'Safe List' mein nahi hai, toh use system-level par **Kill** kar diya jata hai.
+Instantaneous Detection: Any file operation (Modification, Renaming, or Deletion) within the trap zone triggers an immediate security event.
 
+Process Forensics: Through the psutil framework, the system captures the Process ID (PID) and Image Name responsible for the file interaction.
 
+Automated Response: The system cross-references the offending process against a Kernel-level Safe List. If the process is unauthorized, Arachne executes a force-kill command to halt the attack.
 
----
+🚀 Quick Start Guide
+1. Prerequisites
+Ensure you have Python 3.8+ installed. It is recommended to run this in a Windows environment for full psutil process handle support.
 
-### 🚀 Installation
-1. Repository ko clone karein:
-   ```bash
-   git clone [https://github.com/Krishang-Gulati/Arachne-Ransomware-Simulator.git](https://github.com/Krishang-Gulati/Arachne-Ransomware-Simulator.git)
+2. Installation
+Clone the repository and install the necessary dependencies:
+
+Bash
+git clone https://github.com/Krishang-Gulati/Arachne-Ransomware-Simulator.git
+cd Arachne-Ransomware-Simulator
+pip install -r requirements.txt
+3. Execution (The Simulation)
+To demonstrate the system, follow these steps using two separate terminals:
+
+Terminal 1: The Defender (Run as Administrator)
+
+Bash
+python arachne_monitor.py
+This initializes the Honey-Trap environment and starts the real-time observer.
+
+Terminal 2: The Attack Simulator
+
+Bash
+python fake_ransomware.py
+This simulates a cryptographic attack. Watch as Arachne detects the threat and terminates the process instantly.
+
+⚠️ Disclaimer
+This software is developed for educational and research purposes only. It serves as a proof-of-concept for behavior-based ransomware detection. The authors are not responsible for any misuse or damage caused by this tool.
